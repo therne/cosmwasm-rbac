@@ -28,7 +28,7 @@ impl<'a> Role<'a> {
     pub fn handle_query(&self, deps: Deps, msg: RbacQueryMsg) -> StdResult<Binary> {
         match msg {
             RbacQueryMsg::HasRole { address } => {
-                let has = self.has(deps.storage, address)?;
+                let has = self.has(deps.storage, &address)?;
                 Ok(to_binary(&HasRoleResponse { has })?)
             }
             RbacQueryMsg::AllAccounts { starts_after, limit } => {

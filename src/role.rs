@@ -13,7 +13,7 @@ pub trait RoleCheck {
 
 pub struct Role<'a> {
     pub name: &'a str,
-    pub bearer: Map<'a, Addr, bool>,
+    pub bearer: Map<'a, &'a Addr, bool>,
 }
 
 impl<'a> Role<'a> {
@@ -27,13 +27,13 @@ impl<'a> Role<'a> {
 
 impl<'a> Role<'a> {
     /// Returns `true` if given account has the role.
-    pub fn has(&self, store: &dyn Storage, account: Addr) -> StdResult<bool> {
+    pub fn has(&self, store: &dyn Storage, account: &Addr) -> StdResult<bool> {
         Ok(self.bearer.has(store, account))
     }
 
     /// Tests that given account has the role. Returns [RbacError::Unauthorized] if not.
     /// Difference with [has] method is that [check] returns [Result] with [RbacError] while [has] returns just a `bool`.
-    pub fn check(&self, store: &dyn Storage, account: Addr) -> Result<(), RbacError> {
+    pub fn check(&self, store: &dyn Storage, account: &Addr) -> Result<(), RbacError> {
         if self.has(store, account)? {
             Ok(())
         } else {
@@ -43,19 +43,19 @@ impl<'a> Role<'a> {
 
     /// Adds an role to the account.
     pub fn grant(&self, store: &mut dyn Storage, account: Addr) -> Result<(), RbacError> {
-        if self.has(store, account.clone())? {
+        if self.has(store, &account)? {
             return Err(RbacError::DuplicatedRole(account));
         }
-        self.bearer.save(store, account, &true)?;
+        self.bearer.save(store, &account, &true)?;
         Ok(())
     }
 
     /// Removes an role from the account.
     pub fn revoke(&self, store: &mut dyn Storage, account: Addr) -> Result<(), RbacError> {
-        if !self.has(store, account.clone())? {
+        if !self.has(store, &account)? {
             return Err(RbacError::NoRoleToRevoke(account));
         }
-        self.bearer.remove(store, account);
+        self.bearer.remove(store, &account);
         Ok(())
     }
 

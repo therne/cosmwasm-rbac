@@ -28,16 +28,16 @@ MINTERS.revoke(deps.storage, address)?;
 
 ### Checking Roles
 
-`has(Deps, Addr)` method returns `true` if given address has the role.
+`has(Deps, &Addr)` method returns `true` if given address has the role.
 
 ```rust
-if !ADMINS.has(deps, info.sender.clone()) {
+if !ADMINS.has(deps, &info.sender) {
     // not an admin! raise your error here
     return Err(ContractError::Unauthorized {})
 }
 ```
 
-Alternatively, if your `ContractError` contains a `cosmwasm_rbac::RbacError`, you can just simply use **`check(Deps, Addr)`** method, which returns `Result<RbacError>`:
+Alternatively, if your `ContractError` contains a `cosmwasm_rbac::RbacError`, you can just simply use **`check(Deps, &Addr)`** method, which returns `Result<RbacError>`:
 
 ```rust
 #[derive(Error, Debug, PartialEq)]
@@ -48,7 +48,7 @@ pub enum ContractError {
 }
 
 // then you can simply check  (`check` returns `Result`)
-ADMINS.check(deps, address)?;
+ADMINS.check(deps, &address)?;
 ```
 
 ### Use Common Query/Execute Handler
@@ -67,7 +67,7 @@ pub enum QueryMsg {
 #[entry_point]
 pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
-        Admin(rbac_msg) => ADMIN.handle_query(deps, rbac_msg),
+        Admin(rbac_msg) => Ok(ADMINS.handle_query(deps, rbac_msg)?),
         // ...your query handler here
     }
 }
@@ -88,9 +88,9 @@ pub fn execute(deps: DepsMut, env: Env, info: MessageInfo, msg: ExecuteMsg) -> R
     match msg {
         Minter(rbac_msg) => {
             // CHECK NEEDED: only admin can manage minters
-            ADMIN.check(deps, info.sender.clone())?;
+            ADMINS.check(deps, &info.sender)?;
 
-            MINTER.handle_execute(deps, info, msg)
+            Ok(MINTERS.handle_execute(deps, info, msg)?)
         },
         // ...your execution handler here
     }

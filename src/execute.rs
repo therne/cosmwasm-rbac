@@ -39,7 +39,7 @@ impl<'a> Role<'a> {
                 ]))
             }
             RbacExecuteMsg::Transfer { to } => {
-                self.check(deps.storage, info.sender.clone())?;
+                self.check(deps.storage, &info.sender)?;
                 self.revoke(deps.storage, info.sender.clone())?;
                 self.grant(deps.storage, to.clone())?;
 
