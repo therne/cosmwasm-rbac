@@ -1,13 +1,9 @@
-#[cfg(not(feature = "library"))]
-use cosmwasm_std::entry_point;
-use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
+use cosmwasm_std::{entry_point, Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use crate::{RbacError, RbacExecuteMsg, RbacQueryMsg, Role};
-
-const ADMINS: Role = Role::new("admins");
+use cosmwasm_rbac::{RbacError, RbacExecuteMsg, RbacQueryMsg, Role};
 
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
 pub struct InstantiateMsg {}
@@ -30,7 +26,10 @@ pub enum ContractError {
     Rbac(#[from] RbacError),
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+/// here we define admin role
+const ADMINS: Role = Role::new("admins");
+
+#[entry_point]
 pub fn instantiate(
     deps: DepsMut,
     _env: Env,
@@ -44,7 +43,7 @@ pub fn instantiate(
         .add_attribute("owner", info.sender))
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+#[entry_point]
 pub fn execute(
     deps: DepsMut,
     _env: Env,
@@ -59,7 +58,7 @@ pub fn execute(
     }
 }
 
-#[cfg_attr(not(feature = "library"), entry_point)]
+#[entry_point]
 pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
     match msg {
         QueryMsg::Admin(rbac_msg) => Ok(ADMINS.handle_query(deps, rbac_msg)?),

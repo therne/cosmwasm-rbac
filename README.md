@@ -13,8 +13,8 @@ For example, in your `state.rs`:
 ```rust
 use cosmwasm_rbac::Role;
 
-const ADMINS = Role::new("admins");
-const MINTERS = Role::new("minters");
+const ADMINS: Role = Role::new("admins");
+const MINTERS: Role = Role::new("minters");
 ```
 
 ### Granting / Revoking Roles
