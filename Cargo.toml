@@ -1,7 +1,13 @@
 [package]
 name = "cosmwasm-rbac"
+description = "Access Control Utilities for CosmWasm smart contracts"
+keywords = ["cosmwasm", "terra", "smart-contracts"]
 version = "0.1.0"
 edition = "2021"
+readme = "README.md"
+documentation = "https://github.com/therne/cosmwasm-rbac/"
+repository = "https://github.com/therne/cosmwasm-rbac/"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
