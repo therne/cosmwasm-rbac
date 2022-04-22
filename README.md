@@ -127,11 +127,15 @@ this adds following executions: (for details, please refer to [`src/execute.rs`]
 apart from contract-level RBACs, there are [a notion of 'admin' in CosmWasm native level](https://github.com/CosmWasm/wasmd/blob/main/proto/cosmwasm/wasm/v1/types.proto#L69-L90). `cosmwasm_rbac` provides an utility function to query the native contract admin.
 
 ```rust
-use cosmwasm_rbac::is_contract_admin;
+use cosmwasm_rbac::{is_contract_admin, check_contract_admin};
 
+// manual check
 if !is_contract_admin(&deps, env, &info.sender) {
   return Err(Unauthorized{})
 }
+
+// or use guards
+check_contract_admin(&deps, env, &info.sender)?;
 ```
 
 ## License: MIT
