@@ -1,6 +1,6 @@
 [package]
 name = "cosmwasm-rbac"
-version = "0.1.3"
+version = "0.1.4"
 description = "Access Control Utilities for CosmWasm smart contracts"
 authors = ["Hyojun Kim <retail3210@gmail.com>"]
 keywords = ["cosmwasm", "terra", "smart-contracts"]
