@@ -73,6 +73,23 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
 }
 ```
 
+this adds following queries: (for details, please refer to [`src/query.rs`](./src/query.rs))
+
+```js
+{
+  "admin": {
+    "has_role": {
+      "address": "<address>"
+    }
+  }
+}
+{
+  "admin": {
+    "all_accounts": {}
+  }
+}
+```
+
 unlike the query, for executions **be warn that you need to check the permissions manually** before calling `handle_execute`. IF YOU NOT, ANYONE COULD MODIFY YOUR ROLES!
 
 ```rust
@@ -96,3 +113,25 @@ pub fn execute(deps: DepsMut, env: Env, info: MessageInfo, msg: ExecuteMsg) -> R
     }
 }
 ```
+
+this adds following executions: (for details, please refer to [`src/execute.rs`](./src/excecute.rs))
+
+```js
+{"admin": {"grant": {"address": "<address>"}}}
+{"admin": {"revoke": {"address": "<address>"}}}
+{"admin": {"transfer": {"to": "<address>"}}}
+```
+
+### Misc: Checking Contract Admin (Native)
+
+apart from contract-level RBACs, there are [a notion of 'admin' in CosmWasm native level](https://github.com/CosmWasm/wasmd/blob/main/proto/cosmwasm/wasm/v1/types.proto#L69-L90). `cosmwasm_rbac` provides an utility function to query the native contract admin.
+
+```rust
+use cosmwasm_rbac::is_contract_admin;
+
+if !is_contract_admin(&deps, env, &info.sender) {
+  return Err(Unauthorized{})
+}
+```
+
+## License: MIT

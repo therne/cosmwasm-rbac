@@ -1,8 +1,8 @@
-use cosmwasm_std::{to_binary, Addr, Binary, Deps, StdResult};
+use cosmwasm_std::{to_binary, Addr, Binary, Deps, StdResult, Env};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::{Role};
+use crate::{Role, is_contract_admin};
 
 #[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
 #[serde(rename_all = "snake_case")]
@@ -37,4 +37,8 @@ impl<'a> Role<'a> {
             }
         }
     }
+}
+
+fn query(deps: Deps, env: Env) {
+    is_contract_admin(&deps, env, env.contract.address.clone());
 }

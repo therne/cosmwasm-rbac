@@ -1,4 +1,4 @@
-use cosmwasm_std::{Addr, CustomQuery, Deps, Env, StdResult};
+use cosmwasm_std::{Addr, CustomQuery, Env, StdResult, Deps};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
@@ -27,12 +27,12 @@ struct ContractInfoResponse {
     pub ibc_port: Option<String>,
 }
 
-pub fn is_contract_admin(deps: Deps, env: Env, address: Addr) -> StdResult<bool> {
+pub fn is_contract_admin(deps: &Deps, env: Env, address: &Addr) -> StdResult<bool> {
     let request = ContractInfoQuery::ContractInfo {
         contract_addr: env.contract.address.to_string(),
     };
     let resp: ContractInfoResponse = deps.querier.custom_query(&request.into())?;
     let admin = resp.admin.unwrap_or_else(|| String::from(""));
 
-    Ok(admin == address)
+    Ok(admin == address.to_string())
 }

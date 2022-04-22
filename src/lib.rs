@@ -3,7 +3,6 @@ mod execute;
 mod helper_for_admin;
 mod query;
 mod role;
-mod test;
 
 pub use self::{
     errors::RbacError, execute::RbacExecuteMsg, helper_for_admin::is_contract_admin,
