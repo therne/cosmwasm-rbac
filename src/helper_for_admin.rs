@@ -1,4 +1,4 @@
-use cosmwasm_std::{Addr, CustomQuery, Env, StdResult, Deps};
+use cosmwasm_std::{Addr, CustomQuery, Deps, Env, StdResult};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
