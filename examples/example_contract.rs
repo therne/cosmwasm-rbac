@@ -64,3 +64,5 @@ pub fn query(deps: Deps, _env: Env, msg: QueryMsg) -> StdResult<Binary> {
         QueryMsg::Admin(rbac_msg) => Ok(ADMINS.handle_query(deps, rbac_msg)?),
     }
 }
+
+fn main() {}
