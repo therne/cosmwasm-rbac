@@ -3,6 +3,7 @@ mod execute;
 mod helper_for_admin;
 mod query;
 mod role;
+mod msg;
 
 pub use self::{
     errors::RbacError,

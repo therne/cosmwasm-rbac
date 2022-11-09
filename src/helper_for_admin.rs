@@ -1,8 +1,7 @@
-use cosmwasm_std::{Addr, CustomQuery, Deps, Env, StdResult};
+use cosmwasm_std::{CustomQuery};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::RbacError;
 
 #[non_exhaustive]
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
