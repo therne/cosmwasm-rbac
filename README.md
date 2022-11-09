@@ -22,7 +22,7 @@ const USERS: Role = Role::new("users");
 
 Use `grant` and `revoke` method to add or remove roles from an account.
 
-```
+```rust
 ADMINS.grant(deps.storage, address)?;
 USERS.revoke(deps.storage, address)?;
 ```
@@ -31,7 +31,7 @@ USERS.revoke(deps.storage, address)?;
 
 `has(Deps, &Addr)` method returns `true` if given address has the role.
 
-```
+```rust
 if !ADMINS.has(deps, &info.sender) {
     // not an admin! raise your error here
     return Err(ContractError::Unauthorized {})
@@ -40,7 +40,7 @@ if !ADMINS.has(deps, &info.sender) {
 
 Alternatively, if your `ContractError` contains a `cosmwasm_rbac::RbacError`, you can just simply use **`check(Deps, &Addr)`** method, which returns `Result<RbacError>`:
 
-```
+```rust
 #[derive(Error, Debug, PartialEq)]
 pub enum ContractError {
     // if you contain `RbacError`
@@ -56,7 +56,7 @@ ADMINS.check(deps, &address)?;
 
 `cosmwasm_rbac` provides useful common queries/executions for managing RBACs. For example, in your query message and handler, please define enums bearing `RbacQueryMsg` per your roles and call `handle_query(...)` on the handler.
 
-```
+```rust
 
 #[cw_serde]
 
@@ -76,7 +76,7 @@ pub fn query(deps: Deps, env: Env, msg: QueryMsg) -> StdResult<Binary> {
 
 this adds following queries: (for details, please refer to [`src/query.rs`](./src/query.rs))
 
-```
+```js
 {
   "admin": {
     "has_role": {
@@ -94,7 +94,7 @@ this adds following queries: (for details, please refer to [`src/query.rs`](./sr
 unlike the query, for executions **be warned that you need to check the permissions manually** before calling `handle_execute`.
 IF YOU NOT, ANYONE COULD MODIFY YOUR ROLES!
 
-```
+```rust
 #[cw_serde]
 pub enum ExecuteMsg {
     User(cosmwasm_rbac::RbacExecuteMsg),
