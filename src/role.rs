@@ -72,7 +72,8 @@ impl<'a> Role<'a> {
         self.bearer
             .keys(store, start, None, Order::Ascending)
             .take(limit)
-            .map(|item| Ok(Addr::unchecked(String::from_utf8(item)?)))
+            .map(|item |Ok(Addr::unchecked(Addr::from(item.unwrap().into()))))
+            // .map(|item| Ok(Addr::unchecked(String::from_utf8(item)?)))
             .collect::<StdResult<_>>()
     }
 }
