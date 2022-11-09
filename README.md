@@ -91,7 +91,8 @@ this adds following queries: (for details, please refer to [`src/query.rs`](./sr
 }
 ```
 
-unlike the query, for executions **be warn that you need to check the permissions manually** before calling `handle_execute`. IF YOU NOT, ANYONE COULD MODIFY YOUR ROLES!
+unlike the query, for executions **be warned that you need to check the permissions manually** before calling `handle_execute`.
+IF YOU NOT, ANYONE COULD MODIFY YOUR ROLES!
 
 ```
 #[cw_serde]
