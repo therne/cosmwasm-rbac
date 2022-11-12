@@ -4,8 +4,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::{errors::RbacError, Role};
 
-#[derive(Serialize, Deserialize, Clone, PartialEq, JsonSchema, Debug)]
-#[serde(rename_all = "snake_case")]
+#[cw_serde]
+
 pub enum RbacExecuteMsg {
     Grant { address: Addr },
     Revoke { address: Addr },

@@ -1,3 +1,4 @@
+use std::borrow::Borrow;
 use cosmwasm_std::{Addr, Deps, Order, StdResult, Storage};
 use cw_storage_plus::{Bound, Map};
 
@@ -66,13 +67,20 @@ impl<'a> Role<'a> {
         start_after: Option<Addr>,
         limit: Option<u32>,
     ) -> StdResult<Vec<Addr>> {
-        let start = start_after.map(|t| Bound::exclusive(t.to_string()));
+        // let start = start_after.map(|t | Bound::Exclusive((t, Default::default())));
+        // let start = start_after.map(|t| Bound::Exclusive());
+        // let start: &Addr = start_after.map(|t| Bound::Exclusive((t, Default::default())));
+        let start = start_after.as_ref().map(|t| Bound::exclusive(Addr::borrow(t)));
+
         let limit = limit.unwrap_or(DEFAULT_LIMIT).min(MAX_LIMIT) as usize;
 
         self.bearer
             .keys(store, start, None, Order::Ascending)
+            // .range(store,start,None,Order::Ascending)
+
             .take(limit)
-            .map(|item| Ok(Addr::unchecked(String::from_utf8(item)?)))
+            .map(|item |Ok(Addr::unchecked(Addr::from(item.unwrap().into()))))
+            // .map(|item| Ok(Addr::unchecked(String::from_utf8(item())?)))
             .collect::<StdResult<_>>()
     }
 }

@@ -1,8 +1,7 @@
-use cosmwasm_std::{Addr, CustomQuery, Deps, Env, StdResult};
+use cosmwasm_std::{CustomQuery};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 
-use crate::RbacError;
 
 #[non_exhaustive]
 #[derive(Serialize, Deserialize, Clone, Debug, PartialEq, JsonSchema)]
@@ -28,22 +27,22 @@ struct ContractInfoResponse {
     /// set if this contract has bound an IBC port
     pub ibc_port: Option<String>,
 }
+//
+// /// Returns `true` if contract admin.
+// pub fn is_contract_admin(deps: &Deps, env: Env, address: &Addr) -> StdResult<bool> {
+//     let request = ContractInfoQuery::ContractInfo {
+//         contract_addr: env.contract.address.to_string(),
+//     };
+//     let resp: ContractInfoResponse = deps.querier.custom_query(&request.into())?;
+//     let admin = resp.admin.unwrap_or_else(|| String::from(""));
+//
+//     Ok(admin == address.to_string())
+// }
 
-/// Returns `true` if contract admin.
-pub fn is_contract_admin(deps: &Deps, env: Env, address: &Addr) -> StdResult<bool> {
-    let request = ContractInfoQuery::ContractInfo {
-        contract_addr: env.contract.address.to_string(),
-    };
-    let resp: ContractInfoResponse = deps.querier.custom_query(&request.into())?;
-    let admin = resp.admin.unwrap_or_else(|| String::from(""));
-
-    Ok(admin == address.to_string())
-}
-
-/// Ensures that only contract admin (native) can access.
-pub fn check_contract_admin(deps: &Deps, env: Env, address: &Addr) -> Result<(), RbacError> {
-    if is_contract_admin(deps, env, address)? {
-        return Err(RbacError::Unauthorized);
-    }
-    Ok(())
-}
+// /// Ensures that only contract admin (native) can access.
+// pub fn check_contract_admin(deps: &Deps, env: Env, address: &Addr) -> Result<(), RbacError> {
+//     if is_contract_admin(deps, env, address)? {
+//         return Err(RbacError::Unauthorized);
+//     }
+//     Ok(())
+// }
