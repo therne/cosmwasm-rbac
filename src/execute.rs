@@ -1,3 +1,4 @@
+use cosmwasm_schema::cw_serde;
 use cosmwasm_std::{Addr, DepsMut, MessageInfo, Response};
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
